@@ -1,63 +1,62 @@
 "use client";
-import { useState } from "react";
-import toast from "react-hot-toast";
 
-export default function ClientForm({
-  onAdd,
-}: {
-  onAdd: (client: any) => Promise<void>;
-}) {
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { onAdd } from "./useClient"; // Vérifie le bon chemin si besoin
+
+export default function ClientForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const error = await onAdd({ name, email, company });
-    if (error) {
-      toast.error("Erreur lors de l'ajout");
-    } else {
+    try {
+      await onAdd({ name, email, company });
       setName("");
       setEmail("");
       setCompany("");
       toast.success("Client ajouté 🎉");
+    } catch (error) {
+      toast.error("Erreur lors de l'ajout");
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mb-6 space-y-4 bg-white p-6 rounded shadow"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block mb-1 font-medium">Nom</label>
+        <label htmlFor="name">Nom</label>
         <input
-          className="w-full border p-2 rounded"
+          id="name"
           value={name}
           onChange={(e) => setName(e.target.value)}
+          className="input"
           required
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Email</label>
+        <label htmlFor="email">E-mail</label>
         <input
-          className="w-full border p-2 rounded"
+          id="email"
+          type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          className="input"
           required
         />
       </div>
       <div>
-        <label className="block mb-1 font-medium">Société</label>
+        <label htmlFor="company">Entreprise</label>
         <input
-          className="w-full border p-2 rounded"
+          id="company"
           value={company}
           onChange={(e) => setCompany(e.target.value)}
+          className="input"
           required
         />
       </div>
-      <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-800">
-        Ajouter client
+      <button type="submit" className="btn btn-primary">
+        Ajouter le client
       </button>
     </form>
   );
