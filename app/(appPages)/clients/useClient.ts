@@ -22,16 +22,16 @@ export function useClients() {
     return error;
   };
 
-  const deleteClient = async (id: string) => {
+  const deleteClient = async (id: string): Promise<void> => {
     const { error } = await supabase.from("clients").delete().eq("id", id);
-    if (!error) await fetchClients();
-    return error;
+    if (error) throw error;
+    await fetchClients();
   };
 
-  const updateClient = async (id: string, data: any) => {
+  const updateClient = async (id: string, data: any): Promise<void> => {
     const { error } = await supabase.from("clients").update(data).eq("id", id);
-    if (!error) await fetchClients();
-    return error;
+    if (error) throw error;
+    await fetchClients();
   };
 
   useEffect(() => {
