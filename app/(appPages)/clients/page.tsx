@@ -11,7 +11,7 @@ export default function ClientPage() {
   return (
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Clients</h1>
-      <ClientForm onAdd={addClient} />
+      <ClientForm />
       {loading ? (
         <p>Chargement...</p>
       ) : (
