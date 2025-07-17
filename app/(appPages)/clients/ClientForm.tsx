@@ -2,23 +2,26 @@
 
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { onAdd } from "./useClient"; // Vérifie le bon chemin si besoin
+import { useClients } from "./useClient"; // adapte le chemin si besoin
 
 export default function ClientForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
 
+  const { addClient } = useClients();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await onAdd({ name, email, company });
+    const error = await addClient({ name, email, company });
+
+    if (error) {
+      toast.error("Erreur lors de l'ajout");
+    } else {
       setName("");
       setEmail("");
       setCompany("");
       toast.success("Client ajouté 🎉");
-    } catch (error) {
-      toast.error("Erreur lors de l'ajout");
     }
   };
 
