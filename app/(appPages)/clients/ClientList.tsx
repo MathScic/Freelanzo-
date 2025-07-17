@@ -29,9 +29,12 @@ export default function ClientList({
 
   const handleUpdate = async () => {
     if (!editingId) return;
-    const error = await onUpdate(editingId, editData);
-    if (error) toast.error("Erreur mise à jour");
-    else toast.success("Client modifié 🚀");
+    try {
+      await onUpdate(editingId, editData);
+      toast.success("Client modifié 🚀");
+    } catch (error) {
+      toast.error("Erreur mise à jour");
+    }
     setEditingId(null);
   };
 
